@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Previous styles remain the same until message-box */
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #1a1a1a;
+      font-family: 'Segoe UI', sans-serif;
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 350px;
+      height: 650px;
+      background: linear-gradient(-45deg, #ff69b4, #ffb6c1, #ffd700, #ff1493, #9400d3);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite, cardFloat 3s ease-in-out infinite;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2),
+                  inset 0 0 50px rgba(255,255,255,0.3);
+    }
+
+    .friend-message {
+      font-size: 2em;
+      color: #ffffff;
+      text-shadow: 0 0 10px #ff69b4,
+                   0 0 20px #ff1493;
+      margin: 20px 0;
+      animation: friendGlow 2s ease-in-out infinite;
+      font-weight: bold;
+    }
+
+    @keyframes friendGlow {
+      0%, 100% { transform: scale(1); text-shadow: 0 0 10px #ff69b4; }
+      50% { transform: scale(1.05); text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff1493; }
+    }
+
+    .music-controls {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 15px;
+      margin: 15px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .music-btn {
+      background: linear-gradient(45deg, #ff1493, #9400d3);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      margin: 10px 5px;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    .music-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .volume-control {
+      width: 80%;
+      margin: 10px auto;
+    }
+/* 
+    .message-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 15px 0;
+      transform: scale(0);
+      animation: popIn 0.5s ease-out forwards;
+      animation-delay: 1s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    } */
+
+    .surprise-text {
+      position: absolute;
+      font-size: 24px;
+      color: white;
+      text-shadow: 0 0 10px rgba(255,255,255,0.8);
+      pointer-events: none;
+      opacity: 0;
+      animation: surpriseText 2s forwards;
+    }
+
+    @keyframes surpriseText {
+      0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+      50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 0; }
+    }
+
+    .heart-burst {
+      position: absolute;
+      font-size: 30px;
+      pointer-events: none;
+      animation: heartBurst 1s forwards;
+    }
+
+    @keyframes heartBurst {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    /* Previous animation keyframes remain the same */
+
+    /* .wish-card {
+      border: 2px solid #ccc;
+      padding: 20px;
+      background-color: #f9f9f9;
+      text-align: center;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    } */
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="year-2025" style="font-size: 3.5em;">2025</div>
+    <div class="friend-message">Happy New Year<br>Dear Dost! 💝</div>
+    
+    <div class="music-controls">
+      <button class="music-btn" onclick="toggleBackgroundMusic()">
+        Click
+      </button>
+      <button class="music-btn" onclick="playSpecialSong()">
+        🎤 Your Special Song
+      </button>
+      <input type="range" class="volume-control" min="0" max="100" value="50" 
+             onInput="adjustVolume(this.value)">
+    </div>
+
+    <div class="message-box">
+      <div class="love-message">
+        My Dearest Pinky 💖<br>
+        Your Voice Makes Every Moment Magical!
+      </div>
+      <div class="hindi-message">
+        तुम्हारी दोस्ती और तुम्हारी आवाज़,<br>
+        दोनों मेरी ज़िंदगी का सबसे खूबसूरत तोहफा हैं।<br>
+        नया साल तुम्हारे लिए खुशियों की बरसात लाए! ✨
+      </div>
+    </div>
+    
+    <button class="surprise-btn" onclick="createSurpriseMoment()">
+      ✨ Click For A Surprise! ✨
+    </button>
+
+    <div id="wishCard" class="wish-card" style="display: none;">
+      <p id="wishText"></p>
+    </div>
+
+    <audio id="bgMusic" loop>
+      <source src="music/mere mehboob qayamat hogi❤full 🎶🎤🎵song - Pinki tyagi🎤🎤 singing channel(1).mp3" type="audio/mp3">
+    </audio>
+    <audio id="specialSong">
+      <source src="music/'Sooraj Dooba Hain' FULL VIDEO SONG Arijit singh Aditi Singh Sharma T-SERIES - T-Series.mp3" type="audio/mp3">
+      <source src="music/Ek Din Aap Yun [ Slowed + Reverb ] 90's songs - Sanju Lofi Edits.mp3" type="audio/mp3">
+      <source src="music/Khair Mangda - Full Video A Flying Jatt Tiger Shroff, Jacqueline F Atif Aslam Sachin-Jigar - Zee Music Company.mp3" type="audio/mp3">
+      <source src="music/Love You Zindagi Full Video - Dear ZindagiAlia BhattShah Rukh KhanJasleen RoyalAmit T - SonyMusicIndiaVEVO.mp3" type="audio/mp3">
+      <source src="music/Main Hoon Na Title Song Full Video Main Hoon Na Shahrukh Khan, Zayed Khan - T-Series.mp3" type="audio/mp3">
+      <source src="music/MATARGASHTI full VIDEO Song TAMASHA Songs 2015 Ranbir Kapoor, Deepika Padukone T-Series - T-Series.mp3" type="audio/mp3">
+      <source src="music/Vaaste Song Dhvani Bhanushali, Tanishk Bagchi Nikhil D Bhushan Kumar Radhika Rao, Vinay Sapru - MSK Series.mp3" type="audio/mp3">
+    </audio>
+  </div>
+
+  <script>
+    let isBgMusicPlaying = false;
+    const bgMusic = document.getElementById('bgMusic');
+    const specialSong = document.getElementById('specialSong');
+    const wishCard = document.getElementById('wishCard');
+    const wishText = document.getElementById('wishText');
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Start background music by default
+      bgMusic.play();
+      isBgMusicPlaying = true;
+      // Display wish card automatically
+      displayWishCard();
+    });
+
+    function toggleBackgroundMusic() {
+      if (isBgMusicPlaying) {
+        bgMusic.pause();
+        isBgMusicPlaying = false;
+      } else {
+        bgMusic.play();
+        isBgMusicPlaying = true;
+      }
+      displayWishCard();
+    }
+
+    function playSpecialSong() {
+      if (bgMusic.playing) bgMusic.pause();
+      specialSong.currentTime = 0;
+      specialSong.play();
+    }
+
+    function adjustVolume(value) {
+      const volume = value / 100;
+      bgMusic.volume = volume;
+      specialSong.volume = volume;
+    }
+
+    function createSurpriseMoment() {
+      const surprises = [
+        "You're Amazing! 🌟",
+        "Keep Singing! 🎵",
+        "Best Friends Forever! 💖",
+        "Happy New Year My Dear! 🎉",
+        "Love Your Voice! 🎤",
+        "आपकी आवाज़ बहुत प्यारी है! 🎶",
+        "You're A Star! 🌠",
+        "आपकी मुस्कान सबसे खूबसूरत है! 😊"
+      ];
+
+      // Create surprise text
+      const text = document.createElement('div');
+      text.className = 'surprise-text';
+      text.textContent = surprises[Math.floor(Math.random() * surprises.length)];
+      text.style.left = Math.random() * 60 + 20 + '%';
+      text.style.top = Math.random() * 60 + 20 + '%';
+      document.querySelector('.card').appendChild(text);
+      setTimeout(() => text.remove(), 2000);
+
+      // Create heart burst
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'heart-burst';
+          heart.textContent = '💖';
+          heart.style.left = Math.random() * 80 + 10 + '%';
+          heart.style.top = Math.random() * 80 + 10 + '%';
+          document.querySelector('.card').appendChild(heart);
+          setTimeout(() => heart.remove(), 1000);
+        }, i * 200);
+      }
+
+      // Create musical notes
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+          const note = document.createElement('div');
+          note.className = 'musical-note';
+          note.textContent = ['🎵', '🎶', '♪', '♫'][Math.floor(Math.random() * 4)];
+          note.style.left = Math.random() * 80 + 10 + '%';
+          note.style.top = '100%';
+          note.style.animation = 'floatNote 4s ease-out forwards';
+          document.querySelector('.card').appendChild(note);
+          setTimeout(() => note.remove(), 4000);
+        }, i * 300);
+      }
+    }
+
+    function displayWishCard() {
+      const wishes = [
+        "You're Amazing! 🌟",
+        "Keep Singing! 🎵",
+        "Best Friends Forever! 💖",
+        "Happy New Year My Dear! 🎉",
+        "Love Your Voice! 🎤",
+        "आपकी आवाज़ बहुत प्यारी है! 🎶",
+        "You're A Star! 🌠",
+        "आपकी मुस्कान सबसे खूबसूरत है! 😊",
+        "Your new wish here! 🎁" // Add your new wish here
+      ];
+      const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+      wishText.textContent = randomWish;
+      wishCard.style.display = 'block';
+    }
+
+    // Add event listener to stop background music when special song starts
+    specialSong.addEventListener('play', function() {
+      bgMusic.pause();
+      isBgMusicPlaying = false;
+    });
+
+    // Initialize magical effects
+    setInterval(createSurpriseMoment, 8000);
+  </script>
+</body>
+</html>
